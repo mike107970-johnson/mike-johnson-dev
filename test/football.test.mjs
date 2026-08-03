@@ -1,0 +1,22 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {readFile} from 'node:fs/promises';
+import {ApiFootballProvider,ProviderError} from '../lib/football/api-football.mjs';
+import {mapStatus,normalizeFixture,normalizeStatistics} from '../lib/football/contracts.mjs';
+import {StaleCache} from '../lib/football/cache.mjs';
+import {EventDeduplicator,notificationDeepLink} from '../lib/notifications.mjs';
+import {validators} from '../lib/football/service.mjs';
+
+const saved=JSON.parse(await readFile(new URL('./fixtures/api-football-fixtures.json',import.meta.url)));
+const response=(body,{status=200,headers={}}={})=>new Response(JSON.stringify(body),{status,headers:{'content-type':'application/json',...headers}});
+test('saved fixtures map provider statuses without inferring live state',()=>{const expected=[['scheduled',false,false],['live',true,false],['halftime',false,true],['live',true,false],['finished',false,false],['postponed',false,false],['live',true,false],['live',true,false]];saved.response.map(normalizeFixture).forEach((f,i)=>assert.deepEqual([f.status.state,f.status.isLive,f.status.isHalftime],expected[i]))});
+test('upcoming fixtures retain null scores and UTC kickoff',()=>{const f=normalizeFixture(saved.response[0]);assert.equal(f.score.home,null);assert.equal(f.score.away,null);assert.equal(f.kickoffUtc,'2026-08-03T18:00:00.000Z')});
+test('second-half added time and finished scores are normalized',()=>{const live=normalizeFixture(saved.response[3]),finished=normalizeFixture(saved.response[4]);assert.equal(live.addedTime,2);assert.equal(finished.score.fulltime.home,2)});
+test('missing statistics are explicitly unavailable',()=>assert.equal(normalizeStatistics({team:{id:1},statistics:[]}).unavailable,true));
+test('empty fixture date is a valid provider result',async()=>{const p=new ApiFootballProvider({key:'secret',fetchImpl:async()=>response({response:[]}),maxRetries:0});assert.deepEqual(await p.fixturesByDate('2026-08-03'),[])});
+test('provider authentication errors are safe and non-retryable',async()=>{const p=new ApiFootballProvider({key:'secret',fetchImpl:async()=>response({}, {status:401}),maxRetries:0});await assert.rejects(()=>p.liveFixtures(),e=>e.code==='AUTHENTICATION_ERROR'&&!e.message.includes('secret'))});
+test('provider rate limits expose quota metadata without credentials',async()=>{const p=new ApiFootballProvider({key:'secret',fetchImpl:async()=>response({}, {status:429,headers:{'x-ratelimit-requests-remaining':'0'}}),maxRetries:0});await assert.rejects(()=>p.liveFixtures(),e=>e.code==='RATE_LIMITED'&&e.quota.remaining===0)});
+test('temporary provider failure uses bounded retries',async()=>{let calls=0;const p=new ApiFootballProvider({key:'secret',fetchImpl:async()=>{calls++;return response({}, {status:500})},maxRetries:1});await assert.rejects(()=>p.liveFixtures(),ProviderError);assert.equal(calls,2)});
+test('stale cache survives a temporary provider failure',async()=>{const c=new StaleCache();await c.get('fixtures',{ttl:1,staleTtl:10000},async()=>['valid']);await new Promise(r=>setTimeout(r,3));const result=await c.get('fixtures',{ttl:1,staleTtl:10000},async()=>{throw Error('offline')});assert.deepEqual(result.value,['valid']);assert.equal(result.stale,true)});
+test('cache deduplicates simultaneous provider requests',async()=>{const c=new StaleCache();let calls=0;const loader=async()=>{calls++;await new Promise(r=>setTimeout(r,5));return [1]};await Promise.all([c.get('live',{ttl:20},loader),c.get('live',{ttl:20},loader)]);assert.equal(calls,1)});
+test('notification events deduplicate and deep-link to the fixture',()=>{const d=new EventDeduplicator(),event={id:'g1',type:'Goal',team:{id:1},player:{id:9},elapsed:22};assert.equal(d.accept(123,event),true);assert.equal(d.accept(123,event),false);assert.equal(notificationDeepLink(123),'/match/123')});
+test('all external parameters are strictly validated',()=>{assert.equal(validators.id('../1'),null);assert.equal(validators.date('2026-02-31'),null);assert.equal(validators.season('20x6'),null);assert.equal(validators.query('x'),null);assert.equal(validators.query('Arsenal'),'Arsenal')});
+test('status mapper covers suspended, interrupted, cancelled and abandoned',()=>{assert.deepEqual(['SUSP','INT','CANC','ABD'].map(x=>mapStatus(x).state),['suspended','interrupted','cancelled','abandoned'])});
