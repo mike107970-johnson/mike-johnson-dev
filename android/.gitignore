@@ -1,0 +1,12 @@
+.gradle/
+build/
+app/build/
+local.properties
+captures/
+.externalNativeBuild/
+.cxx/
+*.jks
+*.keystore
+key.properties
+# This branch interface accepts text files only; regenerate with `gradle wrapper`.
+gradle/wrapper/gradle-wrapper.jar

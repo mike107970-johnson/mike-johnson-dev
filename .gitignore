@@ -1,0 +1,31 @@
+.env
+.env.local
+node_modules/
+coverage/
+.DS_Store
+
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+*.jks
+*.keystore
+key.properties
+# Binary Gradle bootstrap is regenerated with official Gradle tooling.
+android/gradle/wrapper/gradle-wrapper.jar
+
+# Android binary/generated artifacts (created locally, never committed)
+android/gradle/wrapper/gradle-wrapper.jar
+**/*.apk
+**/*.aab
+**/*.keystore
+**/*.jks
+**/*.class
+**/*.jar
+**/*.zip
+**/.gradle/
+**/build/
+android/app/src/main/res/mipmap-*/**/*.png
+android/app/src/main/res/mipmap-*/**/*.webp
+android/app/src/main/res/drawable*/splash*.png
+android/app/src/main/res/drawable*/splash*.webp
