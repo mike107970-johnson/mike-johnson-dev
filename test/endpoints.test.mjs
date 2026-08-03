@@ -1,0 +1,11 @@
+import test,{after,before} from 'node:test';import assert from 'node:assert/strict';import {readFile} from 'node:fs/promises';
+process.env.NODE_ENV='test';process.env.API_FOOTBALL_KEY='sanitized-test-key';
+const {server,provider,football}=await import('../server.mjs');
+const saved=JSON.parse(await readFile(new URL('./fixtures/api-football-fixtures.json',import.meta.url)));
+let origin,calls=[];
+before(async()=>{provider.key='sanitized-test-key';provider.maxRetries=0;provider.fetch=async url=>{calls.push(String(url));return new Response(JSON.stringify({response:String(url).includes('live=all')?[saved.response[1]]:saved.response}),{status:200,headers:{'content-type':'application/json','x-ratelimit-requests-remaining':'99'}})};await new Promise(r=>server.listen(0,'127.0.0.1',r));origin=`http://127.0.0.1:${server.address().port}`});
+after(()=>new Promise(r=>server.close(r)));
+test('fixture date endpoint returns normalized provider-independent data and metadata',async()=>{football.cache.clear();const r=await fetch(`${origin}/api/football/fixtures?date=2026-08-03`),body=await r.json();assert.equal(r.status,200);assert.equal(body.data[0].id,1001);assert.equal(body.data[0].fixture,undefined);assert.equal(body.meta.provider,'api_football');assert.match(calls.at(-1),/date=2026-08-03/)});
+test('live endpoint labels only provider-live fixtures as live',async()=>{football.cache.clear();const body=await (await fetch(`${origin}/api/football/fixtures/live`)).json();assert.equal(body.data.length,1);assert.equal(body.data[0].status.code,'1H');assert.equal(body.data[0].status.isLive,true)});
+test('invalid IDs and dates never reach the provider',async()=>{const beforeCalls=calls.length;assert.equal((await fetch(`${origin}/api/football/fixtures?date=2026-02-31`)).status,400);assert.equal((await fetch(`${origin}/api/football/fixtures/not-a-number`)).status,404);assert.equal(calls.length,beforeCalls)});
+test('admin manual refresh is protected',async()=>assert.equal((await fetch(`${origin}/api/football/admin/refresh`,{method:'POST'})).status,403));
