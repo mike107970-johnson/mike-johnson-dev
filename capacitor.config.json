@@ -1,0 +1,12 @@
+{
+  "appId": "com.footballvows.app",
+  "appName": "FootballVows",
+  "webDir": "public",
+  "server": {
+    "androidScheme": "https",
+    "hostname": "app.footballvows.com"
+  },
+  "plugins": {
+    "SplashScreen": { "backgroundColor": "#071A3D", "showSpinner": false }
+  }
+}
