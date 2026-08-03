@@ -18,6 +18,6 @@ Set secrets in the hosting dashboard, not Git. Deploy a preview, run the test pl
 
 1. Reduce DNS TTL in advance.
 2. Validate the preview on mobile and desktop.
-3. Retain an AppDeploy rollback target.
+3. Retain the current FootballVows deployment as a rollback target.
 4. Attach `app.footballvows.com`, verify TLS and update Supabase site/callback URLs.
 5. Monitor `/api/health`, provider quotas, OAuth, error logs and cache behaviour.

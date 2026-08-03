@@ -9,7 +9,7 @@ cp .env.example .env
 npm start
 ```
 
-Open <http://localhost:3000>. Without provider credentials the app intentionally shows honest unavailable states—never invented fixtures or statistics.
+Open the development server URL printed by `npm start`. Without provider credentials the app intentionally shows honest unavailable states—never invented fixtures or statistics.
 
 ## Configure
 
@@ -19,7 +19,7 @@ Open <http://localhost:3000>. Without provider credentials the app intentionally
 4. Set the public Supabase URL and anon key. Never expose `SUPABASE_SERVICE_ROLE_KEY`.
 5. Add the production and preview callback URLs in Supabase Google OAuth.
 
-See [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md), [`docs/GOOGLE_PLAY.md`](docs/GOOGLE_PLAY.md), and [`docs/STATUS.md`](docs/STATUS.md).
+See [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md), [`docs/AUTHENTICATION.md`](docs/AUTHENTICATION.md), [`docs/GOOGLE_PLAY.md`](docs/GOOGLE_PLAY.md), and [`docs/STATUS.md`](docs/STATUS.md).
 
 ## Commands
 

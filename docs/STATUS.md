@@ -14,11 +14,12 @@
 - On-demand events, statistics, lineups, players and head-to-head match tabs
 - Football cache/sync/request-log and notification-deduplication database model
 - Capacitor production-origin configuration with no provider secret
+- FootballVows-branded Google/email authentication UI, PKCE OAuth callback, secure session cookies, route restoration, sign-out and account deletion
 
 ## Pending credentials/integration
 
-- Connect and regression-test the existing Supabase schema and Auth users
-- Enable Google/email authentication and realtime community operations
+- Apply the documented Google Cloud and hosted-authentication branding/callback settings, then regression-test existing users
+- Verify Google/email authentication and realtime community operations with production credentials
 - Validate every API-Football resource against the account's licensed leagues, seasons and quota
 - Add supplied official brand artwork (none exists in this repository)
 - Configure push providers, video storage, moderation service and prediction compute
