@@ -5,6 +5,7 @@ plugins {
 android {
     namespace 'com.footballvows.app'
     compileSdk rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         applicationId 'com.footballvows.app'

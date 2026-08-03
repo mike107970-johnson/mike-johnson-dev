@@ -72,8 +72,18 @@ jobs:
       - name: Synchronize Capacitor Android project
         run: npx cap sync android
 
+      - name: Validate Android Gradle configuration
+        run: gradle -p android help --no-daemon --stacktrace
+
       - name: Restore official Gradle wrapper
-        run: gradle -p android wrapper --gradle-version 8.11.1 --distribution-type bin
+        shell: bash
+        run: |
+          wrapper_project="$(mktemp -d)"
+          printf 'tasks.register("bootstrap")\n' > "$wrapper_project/build.gradle"
+          gradle -p "$wrapper_project" wrapper --gradle-version 8.11.1 --distribution-type bin
+          mkdir -p android/gradle/wrapper
+          cp "$wrapper_project/gradle/wrapper/gradle-wrapper.jar" android/gradle/wrapper/gradle-wrapper.jar
+          rm -rf "$wrapper_project"
 
       - name: Build Android debug APK
         run: ./android/gradlew assembleDebug --no-daemon --stacktrace

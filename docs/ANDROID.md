@@ -12,10 +12,12 @@ The launcher and splash artwork committed here are text-based Android VectorDraw
 
 - Node 20 or newer and installed npm dependencies
 - Java 17
-- Android SDK Platform 35 and Build Tools
+- Android SDK Platform 35 and Build Tools 35.0.0
 - Official Gradle 8.11.1 installation for wrapper regeneration
 - Android Gradle Plugin 8.7.2
 - Android Studio with an API 35 SDK
+
+The shared SDK values are loaded from `android/variables.gradle` into `rootProject.ext` before any Android module is evaluated: compile SDK 35, target SDK 35, minimum SDK 26, and Build Tools 35.0.0. The app and generated Capacitor modules consume those root values rather than declaring contradictory versions.
 
 ## Restore the official Gradle wrapper
 
@@ -73,6 +75,8 @@ After any web or plugin change, run `npm run cap:sync` and commit only synchroni
 ## Download a debug APK using your phone
 
 The GitHub runner creates the Gradle wrapper JAR and APK online; neither binary is committed to this repository. The workflow artifact is retained for 14 days.
+
+The workflow first runs the installed official Gradle against the complete Android project with the `help` task, ensuring project configuration is valid. It then generates the omitted wrapper JAR in an isolated temporary Gradle project. This keeps wrapper restoration independent while ensuring real Android configuration errors still fail visibly before compilation.
 
 1. On your phone, open the FootballVows repository on GitHub and sign in.
 2. Tap the **Actions** tab. If it is hidden, open the repository navigation menu first.
