@@ -1,0 +1,111 @@
+name: Build FootballVows Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "android/**"
+      - "public/**"
+      - "capacitor.config.json"
+      - "package.json"
+      - ".github/workflows/build-android-apk.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: android-debug-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-debug-apk:
+    name: Build debug APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out FootballVows
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Cache npm downloads
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('package.json', 'package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      - name: Create lockfile when the repository has none
+        if: ${{ hashFiles('package-lock.json') == '' }}
+        run: npm install --package-lock-only --ignore-scripts
+
+      - name: Install Node dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Android SDK 35
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android platform and build tools
+        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+
+      - name: Set up official Gradle 8.11.1
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.11.1"
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+
+      - name: Build FootballVows web application
+        run: npm run build
+
+      - name: Synchronize Capacitor Android project
+        run: npx cap sync android
+
+      - name: Validate Android Gradle configuration
+        run: gradle -p android help --no-daemon --stacktrace
+
+      - name: Restore official Gradle wrapper
+        shell: bash
+        run: |
+          wrapper_project="$(mktemp -d)"
+          printf 'tasks.register("bootstrap")\n' > "$wrapper_project/build.gradle"
+          gradle -p "$wrapper_project" wrapper --gradle-version 8.11.1 --distribution-type bin
+          mkdir -p android/gradle/wrapper
+          cp "$wrapper_project/gradle/wrapper/gradle-wrapper.jar" android/gradle/wrapper/gradle-wrapper.jar
+          rm -rf "$wrapper_project"
+
+      - name: Build Android debug APK
+        run: ./android/gradlew assembleDebug --no-daemon --stacktrace
+
+      - name: Prepare downloadable APK
+        run: |
+          test -f android/app/build/outputs/apk/debug/app-debug.apk
+          mkdir -p artifacts
+          cp android/app/build/outputs/apk/debug/app-debug.apk artifacts/FootballVows-debug.apk
+
+      - name: Upload FootballVows debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: FootballVows-debug-apk
+          path: artifacts/FootballVows-debug.apk
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 0
+
+      - name: Show Android failure reports
+        if: ${{ failure() }}
+        run: |
+          echo "FootballVows Android build failed. Available diagnostic files:"
+          find android -type f \( -path "*/reports/*" -o -name "*.log" \) -print 2>/dev/null | sort || true
+          find android -type f -path "*/reports/problems/problems-report.html" -exec sh -c 'echo "--- $1 ---"; sed -n "1,240p" "$1"' _ {} \; || true

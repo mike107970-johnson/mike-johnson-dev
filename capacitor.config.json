@@ -1,0 +1,14 @@
+{
+  "appId": "com.footballvows.app",
+  "appName": "FootballVows",
+  "webDir": "public",
+  "server": {
+    "androidScheme": "https",
+    "hostname": "localhost",
+    "cleartext": false
+  },
+  "plugins": {
+    "SplashScreen": { "launchShowDuration": 1800, "backgroundColor": "#071A3D", "showSpinner": false },
+    "StatusBar": { "style": "DARK", "backgroundColor": "#071A3D", "overlaysWebView": false }
+  }
+}

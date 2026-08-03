@@ -1,0 +1,508 @@
+{
+  "response": [
+    {
+      "fixture": {
+        "id": 1001,
+        "date": "2026-08-03T18:00:00+00:00",
+        "timestamp": 1785780000,
+        "timezone": "UTC",
+        "referee": "A. Referee",
+        "venue": {
+          "id": 1,
+          "name": "Test Stadium",
+          "city": "Nairobi"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 39,
+        "name": "Premier League",
+        "country": "England",
+        "logo": "https://example.test/league.png",
+        "flag": "https://example.test/flag.svg",
+        "season": 2026,
+        "round": "Regular Season - 1"
+      },
+      "teams": {
+        "home": {
+          "id": 1,
+          "name": "Home FC",
+          "logo": "https://example.test/home.png"
+        },
+        "away": {
+          "id": 2,
+          "name": "Away FC",
+          "logo": "https://example.test/away.png"
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": 1,
+          "away": 0
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1002,
+        "date": "2026-08-03T18:00:00+00:00",
+        "timestamp": 1785780000,
+        "timezone": "UTC",
+        "referee": "A. Referee",
+        "venue": {
+          "id": 1,
+          "name": "Test Stadium",
+          "city": "Nairobi"
+        },
+        "status": {
+          "long": "First Half",
+          "short": "1H",
+          "elapsed": 23,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 39,
+        "name": "Premier League",
+        "country": "England",
+        "logo": "https://example.test/league.png",
+        "flag": "https://example.test/flag.svg",
+        "season": 2026,
+        "round": "Regular Season - 1"
+      },
+      "teams": {
+        "home": {
+          "id": 1,
+          "name": "Home FC",
+          "logo": "https://example.test/home.png"
+        },
+        "away": {
+          "id": 2,
+          "name": "Away FC",
+          "logo": "https://example.test/away.png"
+        }
+      },
+      "goals": {
+        "home": 2,
+        "away": 1
+      },
+      "score": {
+        "halftime": {
+          "home": 1,
+          "away": 0
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1003,
+        "date": "2026-08-03T18:00:00+00:00",
+        "timestamp": 1785780000,
+        "timezone": "UTC",
+        "referee": "A. Referee",
+        "venue": {
+          "id": 1,
+          "name": "Test Stadium",
+          "city": "Nairobi"
+        },
+        "status": {
+          "long": "Halftime",
+          "short": "HT",
+          "elapsed": 45,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 39,
+        "name": "Premier League",
+        "country": "England",
+        "logo": "https://example.test/league.png",
+        "flag": "https://example.test/flag.svg",
+        "season": 2026,
+        "round": "Regular Season - 1"
+      },
+      "teams": {
+        "home": {
+          "id": 1,
+          "name": "Home FC",
+          "logo": "https://example.test/home.png"
+        },
+        "away": {
+          "id": 2,
+          "name": "Away FC",
+          "logo": "https://example.test/away.png"
+        }
+      },
+      "goals": {
+        "home": 2,
+        "away": 1
+      },
+      "score": {
+        "halftime": {
+          "home": 1,
+          "away": 0
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1004,
+        "date": "2026-08-03T18:00:00+00:00",
+        "timestamp": 1785780000,
+        "timezone": "UTC",
+        "referee": "A. Referee",
+        "venue": {
+          "id": 1,
+          "name": "Test Stadium",
+          "city": "Nairobi"
+        },
+        "status": {
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 67,
+          "extra": 2
+        }
+      },
+      "league": {
+        "id": 39,
+        "name": "Premier League",
+        "country": "England",
+        "logo": "https://example.test/league.png",
+        "flag": "https://example.test/flag.svg",
+        "season": 2026,
+        "round": "Regular Season - 1"
+      },
+      "teams": {
+        "home": {
+          "id": 1,
+          "name": "Home FC",
+          "logo": "https://example.test/home.png"
+        },
+        "away": {
+          "id": 2,
+          "name": "Away FC",
+          "logo": "https://example.test/away.png"
+        }
+      },
+      "goals": {
+        "home": 2,
+        "away": 1
+      },
+      "score": {
+        "halftime": {
+          "home": 1,
+          "away": 0
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1005,
+        "date": "2026-08-03T18:00:00+00:00",
+        "timestamp": 1785780000,
+        "timezone": "UTC",
+        "referee": "A. Referee",
+        "venue": {
+          "id": 1,
+          "name": "Test Stadium",
+          "city": "Nairobi"
+        },
+        "status": {
+          "long": "Match Finished",
+          "short": "FT",
+          "elapsed": 90,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 39,
+        "name": "Premier League",
+        "country": "England",
+        "logo": "https://example.test/league.png",
+        "flag": "https://example.test/flag.svg",
+        "season": 2026,
+        "round": "Regular Season - 1"
+      },
+      "teams": {
+        "home": {
+          "id": 1,
+          "name": "Home FC",
+          "logo": "https://example.test/home.png"
+        },
+        "away": {
+          "id": 2,
+          "name": "Away FC",
+          "logo": "https://example.test/away.png"
+        }
+      },
+      "goals": {
+        "home": 2,
+        "away": 1
+      },
+      "score": {
+        "halftime": {
+          "home": 1,
+          "away": 0
+        },
+        "fulltime": {
+          "home": 2,
+          "away": 1
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1006,
+        "date": "2026-08-03T18:00:00+00:00",
+        "timestamp": 1785780000,
+        "timezone": "UTC",
+        "referee": "A. Referee",
+        "venue": {
+          "id": 1,
+          "name": "Test Stadium",
+          "city": "Nairobi"
+        },
+        "status": {
+          "long": "Postponed",
+          "short": "PST",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 39,
+        "name": "Premier League",
+        "country": "England",
+        "logo": "https://example.test/league.png",
+        "flag": "https://example.test/flag.svg",
+        "season": 2026,
+        "round": "Regular Season - 1"
+      },
+      "teams": {
+        "home": {
+          "id": 1,
+          "name": "Home FC",
+          "logo": "https://example.test/home.png"
+        },
+        "away": {
+          "id": 2,
+          "name": "Away FC",
+          "logo": "https://example.test/away.png"
+        }
+      },
+      "goals": {
+        "home": 2,
+        "away": 1
+      },
+      "score": {
+        "halftime": {
+          "home": 1,
+          "away": 0
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1007,
+        "date": "2026-08-03T18:00:00+00:00",
+        "timestamp": 1785780000,
+        "timezone": "UTC",
+        "referee": "A. Referee",
+        "venue": {
+          "id": 1,
+          "name": "Test Stadium",
+          "city": "Nairobi"
+        },
+        "status": {
+          "long": "Extra Time",
+          "short": "ET",
+          "elapsed": 105,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 39,
+        "name": "Premier League",
+        "country": "England",
+        "logo": "https://example.test/league.png",
+        "flag": "https://example.test/flag.svg",
+        "season": 2026,
+        "round": "Regular Season - 1"
+      },
+      "teams": {
+        "home": {
+          "id": 1,
+          "name": "Home FC",
+          "logo": "https://example.test/home.png"
+        },
+        "away": {
+          "id": 2,
+          "name": "Away FC",
+          "logo": "https://example.test/away.png"
+        }
+      },
+      "goals": {
+        "home": 2,
+        "away": 1
+      },
+      "score": {
+        "halftime": {
+          "home": 1,
+          "away": 0
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1008,
+        "date": "2026-08-03T18:00:00+00:00",
+        "timestamp": 1785780000,
+        "timezone": "UTC",
+        "referee": "A. Referee",
+        "venue": {
+          "id": 1,
+          "name": "Test Stadium",
+          "city": "Nairobi"
+        },
+        "status": {
+          "long": "Penalty In Progress",
+          "short": "P",
+          "elapsed": 120,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 39,
+        "name": "Premier League",
+        "country": "England",
+        "logo": "https://example.test/league.png",
+        "flag": "https://example.test/flag.svg",
+        "season": 2026,
+        "round": "Regular Season - 1"
+      },
+      "teams": {
+        "home": {
+          "id": 1,
+          "name": "Home FC",
+          "logo": "https://example.test/home.png"
+        },
+        "away": {
+          "id": 2,
+          "name": "Away FC",
+          "logo": "https://example.test/away.png"
+        }
+      },
+      "goals": {
+        "home": 2,
+        "away": 1
+      },
+      "score": {
+        "halftime": {
+          "home": 1,
+          "away": 0
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    }
+  ]
+}
