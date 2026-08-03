@@ -69,3 +69,19 @@ The signed AAB is generated below `android/app/build/outputs/bundle/release/` an
 The application ID and Java package are `com.footballvows.app`; minimum SDK 26 corresponds to Android 8.0. The manifest permits Internet/network-state access, blocks cleartext traffic, defines the authentication deep links and verified HTTPS application link, and launches `MainActivity` in single-task mode. The theme configures the navy status/navigation bars, Android splash-screen API, adaptive vector launcher icons, safe-area CSS and Capacitor Back/app-link listeners.
 
 After any web or plugin change, run `npm run cap:sync` and commit only synchronized text sources and packaged text assets. Add production `assetlinks.json`, Android OAuth SHA-1/SHA-256 fingerprints and external signing configuration before release.
+
+## Download a debug APK using your phone
+
+The GitHub runner creates the Gradle wrapper JAR and APK online; neither binary is committed to this repository. The workflow artifact is retained for 14 days.
+
+1. On your phone, open the FootballVows repository on GitHub and sign in.
+2. Tap the **Actions** tab. If it is hidden, open the repository navigation menu first.
+3. Select **Build FootballVows Android APK** from the workflow list.
+4. Tap **Run workflow**, keep the `main` branch selected, and confirm **Run workflow**.
+5. Wait for the **Build debug APK** run to show a green check mark. Open the completed run.
+6. Scroll to **Artifacts** and tap **FootballVows-debug-apk** to download the ZIP file.
+7. Open the downloaded ZIP in Files by Google, My Files, or another trusted archive application and extract `FootballVows-debug.apk`.
+8. Tap `FootballVows-debug.apk`. If Android blocks it, allow **Install unknown apps** for the browser or file manager you used, then retry.
+9. Review the Android installation prompt and tap **Install**. Disable the unknown-app permission again afterwards if you do not need it.
+
+The debug APK is intended for private testing and is not a Play Store release. Do not download artifacts from untrusted forks or unexpected workflow runs. A release AAB still requires external FootballVows signing and Play Console configuration.
