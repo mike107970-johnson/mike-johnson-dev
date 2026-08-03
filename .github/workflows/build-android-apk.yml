@@ -86,7 +86,7 @@ jobs:
           rm -rf "$wrapper_project"
 
       - name: Build Android debug APK
-        run: ./android/gradlew assembleDebug --no-daemon --stacktrace
+        run: gradle --project-dir android assembleDebug --no-daemon --stacktrace
 
       - name: Prepare downloadable APK
         run: |
