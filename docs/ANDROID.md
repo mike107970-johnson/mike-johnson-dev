@@ -11,7 +11,7 @@ The launcher and splash artwork committed here are text-based Android VectorDraw
 ## Toolchain
 
 - Node 20 or newer and installed npm dependencies
-- Java 17
+- Java 21 runtime (Android source compatibility remains Java 17)
 - Android SDK Platform 35 and Build Tools 35.0.0
 - Official Gradle 8.11.1 installation for wrapper regeneration
 - Android Gradle Plugin 8.7.2
