@@ -14,12 +14,12 @@ Open the development server URL printed by `npm start`. Without provider credent
 ## Configure
 
 1. Back up the existing Supabase project before applying changes.
-2. Run `supabase/migrations/001_platform.sql` in a staging project, inspect the policies, and only then apply it to production.
+2. Run the additive Supabase migrations through `003_content_preferences.sql` in a staging project, inspect the policies, and only then apply them to production.
 3. Set `FOOTBALL_DATA_PROVIDER=api_football`, `API_FOOTBALL_KEY`, `API_FOOTBALL_HOST` and `API_FOOTBALL_BASE_URL` in protected server secrets. The key is never sent to the browser or Android bundle.
 4. Set the public Supabase URL and anon key. Never expose `SUPABASE_SERVICE_ROLE_KEY`.
 5. Add the production and preview callback URLs in Supabase Google OAuth.
 
-See [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md), [`docs/AUTHENTICATION.md`](docs/AUTHENTICATION.md), [`docs/ANDROID.md`](docs/ANDROID.md), [`docs/GOOGLE_PLAY.md`](docs/GOOGLE_PLAY.md), and [`docs/STATUS.md`](docs/STATUS.md).
+See [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md), [`docs/AUTHENTICATION.md`](docs/AUTHENTICATION.md), [`docs/ANDROID.md`](docs/ANDROID.md), [`docs/GOOGLE_PLAY.md`](docs/GOOGLE_PLAY.md), and the honest [`docs/CORRECTIVE_STATUS.md`](docs/CORRECTIVE_STATUS.md) verification/deployment report.
 
 ## Commands
 

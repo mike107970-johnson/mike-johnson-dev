@@ -11,7 +11,7 @@ The launcher and splash artwork committed here are text-based Android VectorDraw
 ## Toolchain
 
 - Node 20 or newer and installed npm dependencies
-- Java 17
+- Java 21 runtime (Android source compatibility remains Java 17)
 - Android SDK Platform 35 and Build Tools 35.0.0
 - Official Gradle 8.11.1 installation for wrapper regeneration
 - Android Gradle Plugin 8.7.2
@@ -74,9 +74,9 @@ After any web or plugin change, run `npm run cap:sync` and commit only synchroni
 
 ## Download a debug APK using your phone
 
-The GitHub runner creates the Gradle wrapper JAR and APK online; neither binary is committed to this repository. The workflow artifact is retained for 14 days.
+The GitHub runner builds the APK with the official Gradle 8.11.1 installation supplied by `gradle/actions/setup-gradle`; it does not create or invoke a wrapper JAR. No build binary is committed to this repository. The workflow artifact is retained for 14 days.
 
-The workflow first runs the installed official Gradle against the complete Android project with the `help` task, ensuring project configuration is valid. It then generates the omitted wrapper JAR in an isolated temporary Gradle project. This keeps wrapper restoration independent while ensuring real Android configuration errors still fail visibly before compilation.
+The workflow first runs the installed official Gradle against the complete Android project with the `help` task, ensuring project configuration is valid. It then uses the same installed Gradle executable with `--project-dir android assembleDebug`, avoiding the intentionally omitted wrapper binary entirely.
 
 1. On your phone, open the FootballVows repository on GitHub and sign in.
 2. Tap the **Actions** tab. If it is hidden, open the repository navigation menu first.

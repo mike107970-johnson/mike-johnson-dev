@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "node --watch server.mjs",
     "start": "node server.mjs",
-    "build": "node --check server.mjs && node --check public/app.js",
-    "check": "node --check server.mjs && node --check public/app.js && node --check lib/auth.mjs && node --check lib/football/api-football.mjs && node --check lib/football/service.mjs",
+    "build": "node --check server.mjs && node --check public/app.js && node --check public/data.js",
+    "check": "node --check server.mjs && node --check public/app.js && node --check public/data.js && node --check lib/auth.mjs && node --check lib/content.mjs && node --check lib/football/api-football.mjs && node --check lib/football/service.mjs",
     "test": "node --test",
     "build:web": "npm run build",
     "cap:sync": "npm run build:web && cap sync android",
