@@ -18,6 +18,21 @@ export function dateWindow(selected,size=7){
   });
 }
 
+export function fixtureEndpoint(tab,date){
+  if(tab==='live')return '/api/fixtures/live';
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(date||''))throw new TypeError('A valid fixture date is required');
+  return `/api/fixtures?date=${encodeURIComponent(date)}`;
+}
+
+export function fixtureError(error,{online=true}={}){
+  if(!online)return {title:'Device offline',message:'Reconnect to load current scores. Previously loaded fixtures remain available where cached.'};
+  const code=error?.code||'';
+  if(code==='NOT_CONFIGURED')return {title:'Football provider is not configured',message:'The backend administrator must securely configure the football provider.'};
+  if(code==='RATE_LIMITED'||code==='CLIENT_RATE_LIMIT')return {title:'Provider rate limit reached',message:'Live football data is temporarily rate limited. Please retry shortly.'};
+  if(code==='SUBSCRIPTION_REQUIRED'||code==='PROVIDER_VALIDATION')return {title:'Resource unavailable on provider plan',message:'The configured provider subscription does not include this football resource.'};
+  return {title:'Backend unavailable',message:error?.message||'FootballVows could not reach the scores backend. Please retry.'};
+}
+
 export function mergeUnique(items,key='id'){
   const values=new Map();
   for(const item of items||[]){const id=typeof key==='function'?key(item):item?.[key];if(id!=null&&!values.has(id))values.set(id,item)}
