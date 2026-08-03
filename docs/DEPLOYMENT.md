@@ -11,6 +11,8 @@ Do not point `app.footballvows.com` at this build until staging acceptance passe
 - Supabase service key for server-only administrative jobs (not required for the public shell)
 - Google OAuth client configured in Supabase
 - WordPress REST endpoint (defaults to the production FootballVows endpoint)
+- Approved feed-aggregation URL and optional bearer token (`EXTERNAL_FEEDS_API_URL`, `EXTERNAL_FEEDS_TOKEN`)
+- Public runtime `API_BASE_URL` generated into `public/config.js` (production: `https://api.footballvows.com`)
 
 Set secrets in the hosting dashboard, not Git. Deploy a preview, run the test plan, add its OAuth callback URL, and confirm existing profiles and favourites before DNS changes. The server needs Node 20+, HTTPS, persistent environment configuration and a reverse proxy capable of forwarding all application routes.
 
