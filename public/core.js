@@ -4,7 +4,8 @@ export function resolveApiUrl(resource,{native=false,config={}}={}){
   if(typeof resource!=='string')return resource;
   if(!resource.startsWith('/api/'))return resource;
   if(!native)return resource;
-  const base=String(config.API_BASE_URL||DEFAULT_API_BASE_URL).replace(/\/$/,'');
+  const football=/^\/api\/(football|fixtures)(?:\/|$)/.test(resource);
+  const base=String((football&&config.FOOTBALL_API_BASE_URL)||config.API_BASE_URL||DEFAULT_API_BASE_URL).replace(/\/$/,'');
   if(!/^https:\/\//i.test(base))throw new TypeError('Native API base URL must use HTTPS');
   return `${base}${resource}`;
 }
