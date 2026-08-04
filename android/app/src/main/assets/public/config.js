@@ -1,2 +1,2 @@
-// Paste the deployed workers.dev URL into apiOrigin before building Android. Never put provider secrets here.
-window.FOOTBALLVOWS_CONFIG = Object.freeze({ apiOrigin: '' });
+// Public runtime configuration; this file must never contain provider or service-role credentials.
+window.FOOTBALLVOWS_CONFIG = Object.freeze({ apiOrigin: 'https://app.footballvows.com', footballApiOrigin: '' });

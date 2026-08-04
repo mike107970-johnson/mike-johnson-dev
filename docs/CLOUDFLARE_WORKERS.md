@@ -46,10 +46,13 @@ An empty `data` array is a valid successful response when no matches are schedul
 
 ## 4. Configure and rebuild Android
 
-Open `public/config.js` and paste the copied URL into the **`window.FOOTBALLVOWS_CONFIG.apiOrigin`** field:
+Open `public/config.js` and paste the copied URL into the **`window.FOOTBALLVOWS_CONFIG.footballApiOrigin`** field:
 
 ```js
-window.FOOTBALLVOWS_CONFIG = Object.freeze({ apiOrigin: 'https://footballvows-api.<account-subdomain>.workers.dev' });
+window.FOOTBALLVOWS_CONFIG = Object.freeze({
+  apiOrigin: 'https://app.footballvows.com',
+  footballApiOrigin: 'https://footballvows-api.<account-subdomain>.workers.dev'
+});
 ```
 
 The angle-bracket example is documentation only; never build it unchanged. Use the exact URL Wrangler printed. Then synchronize and rebuild, because `config.js` is packaged inside the APK:
@@ -62,7 +65,7 @@ cd android
 ./gradlew assembleDebug
 ```
 
-Install `android/app/build/outputs/apk/debug/app-debug.apk` on the device. A **new APK is required every time the packaged `apiOrigin` changes**. Confirm `public/config.js` and `android/app/src/main/assets/public/config.js` are identical after sync.
+Install `android/app/build/outputs/apk/debug/app-debug.apk` on the device. A **new APK is required every time the packaged `footballApiOrigin` changes**. Confirm `public/config.js` and `android/app/src/main/assets/public/config.js` are identical after sync.
 
 ## Endpoints
 
@@ -75,5 +78,5 @@ All endpoints are `GET`: `/api/health`, `/api/fixtures?date=YYYY-MM-DD`, `/api/f
 - **404:** verify the copied `workers.dev` hostname and one of the documented `/api` paths. Fixture IDs must contain digits only.
 - **429:** respect `Retry-After`. The Worker has a per-client public limit and API-Football has a separate subscription quota. Do not shorten live polling below the configured 25-second cache.
 - **Provider-plan limitation:** events, lineups, players, statistics, standings, or head-to-head may be unavailable for a competition or plan. The app must show the unavailable state rather than substitute data.
-- **Network errors:** open `/api/health` in the device browser, verify Android internet permission, ensure `apiOrigin` uses HTTPS and ends in `.workers.dev`, then rebuild the APK.
+- **Network errors:** open `/api/health` in the device browser, verify Android internet permission, ensure `footballApiOrigin` uses HTTPS and ends in `.workers.dev`, then rebuild the APK.
 - **`configured: false`:** the secret is absent from the selected Worker environment. Store it with the exact production command above.
