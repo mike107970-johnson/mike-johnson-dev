@@ -1,0 +1,13 @@
+name = "footballvows-football-api"
+main = "worker/index.mjs"
+compatibility_date = "2026-08-04"
+workers_dev = true
+
+[vars]
+API_FOOTBALL_BASE_URL = "https://v3.football.api-sports.io"
+API_FOOTBALL_HOST = "v3.football.api-sports.io"
+API_FOOTBALL_TIMEZONE = "Africa/Nairobi"
+ALLOWED_ORIGINS = "https://app.footballvows.com,https://localhost,capacitor://localhost"
+
+# API_FOOTBALL_KEY is intentionally absent. Configure it with:
+# npx wrangler secret put API_FOOTBALL_KEY

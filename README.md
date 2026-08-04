@@ -19,7 +19,7 @@ Open the development server URL printed by `npm start`. Without provider credent
 4. Set the public Supabase URL and anon key. Never expose `SUPABASE_SERVICE_ROLE_KEY`.
 5. Add the production and preview callback URLs in Supabase Google OAuth.
 
-See [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md), [`docs/AUTHENTICATION.md`](docs/AUTHENTICATION.md), [`docs/ANDROID.md`](docs/ANDROID.md), [`docs/GOOGLE_PLAY.md`](docs/GOOGLE_PLAY.md), and the honest [`docs/CORRECTIVE_STATUS.md`](docs/CORRECTIVE_STATUS.md) verification/deployment report.
+See [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md), [`docs/CLOUDFLARE.md`](docs/CLOUDFLARE.md), [`docs/AUTHENTICATION.md`](docs/AUTHENTICATION.md), [`docs/ANDROID.md`](docs/ANDROID.md), [`docs/GOOGLE_PLAY.md`](docs/GOOGLE_PLAY.md), and the honest [`docs/CORRECTIVE_STATUS.md`](docs/CORRECTIVE_STATUS.md) verification/deployment report.
 
 ## Commands
 
@@ -32,3 +32,5 @@ npm run build
 ## Football API
 
 Public read endpoints live below `/api/football`; see [`docs/FOOTBALL_DATA.md`](docs/FOOTBALL_DATA.md) for endpoints, cache policy, quota planning, troubleshooting and provider-plan limitations. Provider data is normalized in `lib/football/contracts.mjs`, so another licensed adapter can be introduced without changing the interface.
+
+The Cloudflare Worker can serve those routes from a `workers.dev` origin while the main application backend continues to serve authentication and editorial APIs. Follow [`docs/CLOUDFLARE.md`](docs/CLOUDFLARE.md) to store `API_FOOTBALL_KEY` as a Worker secret, deploy, and configure the Android football API origin.
