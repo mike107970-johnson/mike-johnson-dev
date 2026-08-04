@@ -52,3 +52,9 @@ Use `football_competitions.enabled`, `featured` and `display_order`. Pin major l
 ## Verification
 
 Run `npm test`, `npm run check`, and `npm run build`. With staging credentials, verify each endpoint and compare the selected Nairobi date to the provider console. Then background/foreground the PWA, confirm network polling stops/resumes, verify LIVE/HT labels against provider status, and validate a temporary provider outage returns cached data.
+
+## Stable fixture API
+
+The backend also exposes the provider-neutral fixture contract at `/api/fixtures`,
+`/api/fixtures/live`, and `/api/fixtures/:fixtureId/{events,statistics,lineups,players,head-to-head,standings}`.
+These are aliases of the existing `/api/football` endpoints; credentials never cross this server boundary.

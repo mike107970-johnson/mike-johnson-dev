@@ -1,0 +1,36 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "footballvows-api",
+  "main": "worker/index.mjs",
+  "compatibility_date": "2026-08-01",
+  "workers_dev": true,
+  "preview_urls": true,
+  "vars": {
+    "API_FOOTBALL_HOST": "v3.football.api-sports.io",
+    "API_FOOTBALL_BASE_URL": "https://v3.football.api-sports.io",
+    "API_FOOTBALL_TIMEZONE": "Africa/Nairobi",
+    "PUBLIC_RATE_LIMIT": "120",
+    "LIVE_CACHE_SECONDS": "25",
+    "FIXTURE_CACHE_SECONDS": "300",
+    "FINISHED_CACHE_SECONDS": "86400",
+    "DETAIL_CACHE_SECONDS": "3600",
+    "ALLOWED_ORIGINS": "https://localhost,capacitor://localhost"
+  },
+  "env": {
+    "production": {
+      "name": "footballvows-api",
+      "workers_dev": true,
+      "vars": {
+        "API_FOOTBALL_HOST": "v3.football.api-sports.io",
+        "API_FOOTBALL_BASE_URL": "https://v3.football.api-sports.io",
+        "API_FOOTBALL_TIMEZONE": "Africa/Nairobi",
+        "PUBLIC_RATE_LIMIT": "120",
+        "LIVE_CACHE_SECONDS": "25",
+        "FIXTURE_CACHE_SECONDS": "300",
+        "FINISHED_CACHE_SECONDS": "86400",
+        "DETAIL_CACHE_SECONDS": "3600",
+        "ALLOWED_ORIGINS": "https://localhost,capacitor://localhost"
+      }
+    }
+  }
+}

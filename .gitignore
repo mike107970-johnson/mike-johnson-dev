@@ -29,3 +29,6 @@ android/app/src/main/res/mipmap-*/**/*.png
 android/app/src/main/res/mipmap-*/**/*.webp
 android/app/src/main/res/drawable*/splash*.png
 android/app/src/main/res/drawable*/splash*.webp
+
+.dev.vars
+.wrangler/
