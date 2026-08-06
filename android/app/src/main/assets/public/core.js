@@ -28,9 +28,11 @@ export function fixtureEndpoint(tab,date){
 export function fixtureError(error,{online=true}={}){
   if(!online)return {title:'Device offline',message:'Reconnect to load current scores. Previously loaded fixtures remain available where cached.'};
   const code=error?.code||'';
-  if(code==='NOT_CONFIGURED')return {title:'Football provider is not configured',message:'The backend administrator must securely configure the football provider.'};
+  if(code==='WORKER_URL_NOT_CONFIGURED')return {title:'Worker URL not configured',message:'FootballVows backend has not been configured.'};
+  if(code==='NOT_CONFIGURED')return {title:'API-Football key not configured',message:'The Cloudflare Worker is available, but the football provider secret has not been configured.'};
   if(code==='RATE_LIMITED'||code==='CLIENT_RATE_LIMIT')return {title:'Provider rate limit reached',message:'Live football data is temporarily rate limited. Please retry shortly.'};
   if(code==='SUBSCRIPTION_REQUIRED'||code==='PROVIDER_VALIDATION')return {title:'Resource unavailable on provider plan',message:'The configured provider subscription does not include this football resource.'};
+  if(code==='WORKER_UNAVAILABLE')return {title:'Worker unavailable',message:'The Cloudflare Worker could not complete this request.'};
   return {title:'Backend unavailable',message:error?.message||'FootballVows could not reach the scores backend. Please retry.'};
 }
 
