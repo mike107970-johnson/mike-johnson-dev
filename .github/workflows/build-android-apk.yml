@@ -66,8 +66,16 @@ jobs:
           gradle-version: "8.11.1"
           cache-read-only: ${{ github.ref != 'refs/heads/main' }}
 
-      - name: Build FootballVows web application
+      - name: Configure public Worker origin
         run: npm run build
+        env:
+          PUBLIC_API_ORIGIN: ${{ vars.PUBLIC_API_ORIGIN }}
+
+      - name: Run automated tests
+        run: npm test
+
+      - name: Run static checks
+        run: npm run check
 
       - name: Synchronize Capacitor Android project
         run: npx cap sync android

@@ -26,5 +26,5 @@ test('Worker rejects invalid dates before calling API-Football', async () => {
 
 test('Worker health reports secret presence, never its value', async () => {
   const response = await handleRequest(new Request('https://example.workers.dev/api/health'), env, createFootballApp(env, providerFetch));
-  assert.deepEqual(await response.json(), { ok: true, service: 'footballvows-football-api', configured: true });
+  assert.deepEqual(await response.json(), { ok: true, worker: 'available', service: 'footballvows-football-api', providerSecretConfigured: true });
 });

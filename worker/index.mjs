@@ -3,16 +3,34 @@ import { envelope } from '../lib/football/contracts.mjs';
 import { FootballService, validators } from '../lib/football/service.mjs';
 
 const applications = new WeakMap();
+const rateLimits = new Map();
 const jsonHeaders = { 'content-type': 'application/json; charset=utf-8' };
 
 function corsHeaders(request, env) {
   const origin = request.headers.get('origin');
-  const allowed = new Set(String(env.ALLOWED_ORIGINS || 'https://app.footballvows.com,https://localhost,capacitor://localhost').split(',').map(value => value.trim()).filter(Boolean));
-  return origin && allowed.has(origin) ? { 'access-control-allow-origin': origin, vary: 'Origin' } : {};
+  const allowed = new Set(String(env.ALLOWED_ORIGINS || 'https://localhost,capacitor://localhost,http://localhost').split(',').map(value => value.trim()).filter(Boolean));
+  if (origin && (allowed.has(origin) || origin === 'capacitor://localhost')) return { 'access-control-allow-origin': origin, vary: 'Origin' };
+  return {};
 }
 
-function response(request, env, body, status = 200) {
-  return new Response(JSON.stringify(body), { status, headers: { ...jsonHeaders, ...corsHeaders(request, env) } });
+function response(request, env, body, status = 200, extraHeaders = {}) {
+  return new Response(JSON.stringify(body), { status, headers: { ...jsonHeaders, ...corsHeaders(request, env), ...extraHeaders } });
+}
+
+function cacheHeaders(kind = 'default') {
+  const maxAge = kind === 'live' ? 15 : kind === 'detail' ? 60 : 300;
+  const swr = kind === 'live' ? 30 : kind === 'detail' ? 300 : 1800;
+  return { 'cache-control': `public, max-age=${maxAge}, stale-while-revalidate=${swr}` };
+}
+
+function rateLimited(request, env) {
+  const limit = Number(env.CLIENT_RATE_LIMIT_PER_MINUTE || 120);
+  const ip = request.headers.get('cf-connecting-ip') || request.headers.get('x-forwarded-for') || 'anonymous';
+  const bucket = `${ip}:${Math.floor(Date.now() / 60000)}`;
+  const count = (rateLimits.get(bucket) || 0) + 1;
+  rateLimits.set(bucket, count);
+  if (rateLimits.size > 2000) for (const key of rateLimits.keys()) if (!key.endsWith(String(Math.floor(Date.now() / 60000)))) rateLimits.delete(key);
+  return count > limit;
 }
 
 function error(request, env, status, code, message, retryable = false) {
@@ -39,22 +57,24 @@ async function route(request, env, app = appFor(env)) {
   const url = new URL(request.url);
   if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: { ...corsHeaders(request, env), 'access-control-allow-methods': 'GET, OPTIONS', 'access-control-allow-headers': 'Accept, Content-Type' } });
   if (request.method !== 'GET') return error(request, env, 405, 'METHOD_NOT_ALLOWED', 'The Cloudflare football API accepts GET requests only.');
-  if (url.pathname === '/api/health') return response(request, env, { ok: true, service: 'footballvows-football-api', configured: Boolean(env.API_FOOTBALL_KEY) });
+  if (url.pathname === '/api/health') return response(request, env, { ok: true, worker: 'available', service: 'footballvows-football-api', providerSecretConfigured: Boolean(env.API_FOOTBALL_KEY) }, 200, { 'cache-control': 'no-store' });
+  if (rateLimited(request, env)) return error(request, env, 429, 'CLIENT_RATE_LIMIT', 'Too many requests. Please retry shortly.', true);
 
   const path = url.pathname.replace(/^\/api\/fixtures(?=\/|$)/, '/api/football/fixtures');
   const { football, provider } = app;
   try {
     if (path === '/api/football/status') return response(request, env, football.status());
-    if (path === '/api/football/fixtures/live') return response(request, env, await football.live());
+    if (path === '/api/football/fixtures/live') return response(request, env, await football.live(), 200, cacheHeaders('live'));
     if (path === '/api/football/fixtures') {
       const date = validators.date(url.searchParams.get('date'));
-      return date ? response(request, env, await football.fixtures(date)) : error(request, env, 400, 'INVALID_PARAMETER', 'A valid date is required.');
+      return date ? response(request, env, await football.fixtures(date), 200, cacheHeaders('fixtures')) : error(request, env, 400, 'INVALID_PARAMETER', 'A valid date is required.');
     }
     let match = path.match(/^\/api\/football\/fixtures\/(\d+)$/);
-    if (match) return response(request, env, await football.fixture(Number(match[1])));
+    if (match) { const id = validators.id(match[1]); return id ? response(request, env, await football.fixture(id), 200, cacheHeaders('detail')) : error(request, env, 400, 'INVALID_PARAMETER', 'A valid fixture ID is required.'); }
     match = path.match(/^\/api\/football\/fixtures\/(\d+)\/(events|statistics|lineups|players|head-to-head|standings)$/);
     if (match) {
-      const id = Number(match[1]), kind = match[2];
+      const id = validators.id(match[1]), kind = match[2];
+      if (!id) return error(request, env, 400, 'INVALID_PARAMETER', 'A valid fixture ID is required.');
       if (kind === 'events') return response(request, env, await football.events(id));
       if (kind === 'statistics') return response(request, env, await football.statistics(id));
       if (kind === 'lineups') return response(request, env, await football.lineups(id));
